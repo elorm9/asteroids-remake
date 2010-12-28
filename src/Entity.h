@@ -36,7 +36,6 @@ public:
 	void setDY(float dy);
 
 	void setSprite(std::string str);
-	void update();
 
 };
 

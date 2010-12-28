@@ -11,14 +11,14 @@
 #include <iostream>
 Player::Player():Ship() {
 	maxHP = 100;
-	move = 0;
+	move = 1;
 }
 
 Player::Player(int x, int y):Ship(x,y){
 	maxHP = 100;
 	move = 0;
 	dA = 0;
-	maxSpeed = 4;
+	maxSpeed = 5;
 	getEntity().setSprite("src/Images/ship1.png");
 }
 
@@ -46,7 +46,6 @@ void Player::handle_input(const sf::Input &key) {
 			dA = -5;
 		}
 	}
-
 	else
 	{
 		dA = 0;
@@ -57,29 +56,25 @@ void Player::handle_input(const sf::Input &key) {
 	if(key.IsKeyDown(sf::Key::Up) || key.IsKeyDown(sf::Key::Down)){
 
 		if(key.IsKeyDown(sf::Key::Up)){
-//			if(move > 0){
-//				move -= .4;
-//			}
-//			else
+
 			if(move > -maxSpeed)
-				move -= .5;
-			//getEntity().getSprite().Move(dx , dy);
+				move -= .2;
 		}
 
 		else
 		{
-//			if(move < 0){
-//				move = 0;
-//			}
-
 			if(move < maxSpeed)
-				move += .5;
+				move += .2;
 			//getEntity().getSprite().Move(dx, dy);
 		}
 	}
 	else
 	{
-		move = 0;
+		if(move < 0)
+			move += .2;
+
+		if(move > 0)
+			move -= .2;
 	}
 
 
@@ -91,12 +86,36 @@ void Player::handle_input(const sf::Input &key) {
 	if(key.IsKeyDown(sf::Key::S))
 		fireLaser();
 
+}
+
+void Player::update(sf::RenderWindow &Game){
+
 	dx = move*cos((90-getEntity().getSprite().GetRotation() )*M_PI/180);
 	dy = move*sin((90-getEntity().getSprite().GetRotation() )*M_PI/180);
 
-}
+	sf::Sprite &p = getEntity().getSprite();
 
-void Player::update(){
-	getEntity().getSprite().Move(dx, dy);
+	//left
+	if(p.GetPosition().x < -10){
+		p.SetPosition(Game.GetWidth()+10, p.GetPosition().y);
+	}
+
+	else
+		if(p.GetPosition().x > Game.GetWidth()+10){
+			p.SetPosition(1, p.GetPosition().y);
+		}
+
+
+	if(p.GetPosition().y < -10){
+		p.SetPosition(p.GetPosition().x, Game.GetHeight());
+	}
+
+	else
+		if(p.GetPosition().y > Game.GetHeight()+10){
+			p.SetPosition(p.GetPosition().x, 0);
+		}
+
+	getEntity().getSprite().Move(30 * Game.GetFrameTime()*dx, 30 * Game.GetFrameTime()* dy);
 	getEntity().getSprite().Rotate(dA);
+
 }
