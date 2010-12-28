@@ -24,7 +24,7 @@ public:
 
 	int getMaxHP();
 	void handle_input(const sf::Input &key);
-	void update();
+	void update(sf::RenderWindow & Game);
 };
 
 #endif /* PLAYER_H_ */

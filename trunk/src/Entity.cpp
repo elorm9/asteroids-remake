@@ -42,13 +42,7 @@ void Entity::setDY(float d){
 
 void Entity::setSprite(std::string str){
 	image.LoadFromFile(str);
-	image.Bind();
+	image.SetSmooth(false);
 	sprite.SetImage(image);
 }
 
-void Entity::update(){
-	float x = sprite.GetPosition().x;
-	float y = sprite.GetPosition().y;
-
-	sprite.SetPosition(x+dx, y+dy);
-}
