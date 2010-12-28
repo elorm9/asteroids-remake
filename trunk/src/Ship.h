@@ -14,7 +14,7 @@
 //standard class for the player's ship and enemy aircrafts
 class Ship {
 
-	int HP;
+	int hp;
 	Entity entity;
 	std::list<Projectile> missiles;
 
@@ -26,6 +26,9 @@ public:
 	int getHP();
 	Entity & getEntity();
 	std::list<Projectile> & getMissiles();
+
+	void fireMissile();
+	void fireLaser();
 
 
 };
