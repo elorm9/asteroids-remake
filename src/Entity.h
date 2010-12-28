@@ -12,6 +12,9 @@
 #include <SFML/Graphics.hpp>
 
 class Entity {
+	//dx and dy determine the displacement of the entity in the x and y directions
+	float dx;
+	float dy;
 	Bound bound;
 	sf::Image image;
 	sf::Sprite sprite;
@@ -29,9 +32,11 @@ public:
 	void setVisibility(bool b);
 	bool isVisible();
 
+	void setDX(float dx);
+	void setDY(float dy);
 
-
-
+	void setSprite(std::string str);
+	void update();
 
 };
 

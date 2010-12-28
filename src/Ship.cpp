@@ -17,3 +17,19 @@ Ship::Ship(int x, int y){
 Ship::~Ship() {
 	// TODO Auto-generated destructor stub
 }
+
+int Ship::getHP(){
+	return hp;
+}
+
+Entity & Ship::getEntity(){
+	return entity;
+}
+
+void Ship::fireLaser(){
+
+}
+
+void Ship::fireMissile(){
+
+}
