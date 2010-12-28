@@ -11,16 +11,20 @@
 class Player : public Ship {
 
 int maxHP;
-int angle;
-int move;
+float move;
+int maxSpeed;
 
+float dx;
+float dy;
+int dA;
 public:
 	Player();
 	Player(int x, int y);
 	virtual ~Player();
 
 	int getMaxHP();
-	void handle_input(sf::Event event);
+	void handle_input(const sf::Input &key);
+	void update();
 };
 
 #endif /* PLAYER_H_ */

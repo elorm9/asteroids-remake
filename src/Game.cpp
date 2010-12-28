@@ -12,21 +12,28 @@ using namespace std;
 
 int main() {
 	sf::RenderWindow Game(sf::VideoMode(800,600,32), "Game");
-	Game.SetFramerateLimit(60);
 	Game.UseVerticalSync(true);
 	Player user(300,300);
 
+	const sf::Input& input = Game.GetInput();
+	sf::Event event;
+
 	while(Game.IsOpened()){
-		sf::Event event;
+
+		Game.Clear();
+
+	//	user.getEntity().getSprite().Move(2,-1);
+		//user.getEntity().getSprite().Rotate(2);
 		while(Game.GetEvent(event)){
 			if(event.Type == sf::Event::Closed)
 				Game.Close();
 
-			user.handle_input(event);
+			user.handle_input(input);
 		}
-		Game.Clear();
 
+		user.update();
 		Game.Draw(user.getEntity().getSprite());
+
 		Game.Display();
 	}
 	return 0;

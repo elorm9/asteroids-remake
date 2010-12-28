@@ -11,14 +11,14 @@
 #include <iostream>
 Player::Player():Ship() {
 	maxHP = 100;
-	angle = 0;
 	move = 0;
 }
 
 Player::Player(int x, int y):Ship(x,y){
 	maxHP = 100;
-	angle = 90;
-	move = 5;
+	move = 0;
+	dA = 0;
+	maxSpeed = 4;
 	getEntity().setSprite("src/Images/ship1.png");
 }
 
@@ -30,63 +30,73 @@ int Player::getMaxHP(){
 	return maxHP;
 }
 
-void Player::handle_input(sf::Event event){
-	//If a key was pressed
-	if( event.Type == sf::Event::KeyPressed ){
-		//Adjust the velocity
+void Player::handle_input(const sf::Input &key) {
 
-		if(event.Key.Code == sf::Key::Up){
-			getEntity().getSprite().Move(-move*cos(angle*M_PI/180), -move*sin(angle*M_PI/180));
+//--------------rotation keys----------------
+//if left or right arrow keys are pressed
+	if(key.IsKeyDown(sf::Key::Left) || key.IsKeyDown(sf::Key::Right)){
+
+		//if left key is pressed, rotate ship left
+		if(key.IsKeyDown(sf::Key::Left)){
+			dA = 5;
 		}
 
-		else
-		if(event.Key.Code == sf::Key::Down){
-			getEntity().getSprite().Move(move*cos(angle*M_PI/180), move*sin(angle*M_PI/180));
+		//otherwise rotate right
+		else{
+			dA = -5;
 		}
-
-		else
-		if(event.Key.Code == sf::Key::Left){
-			angle -= 10;
-			getEntity().getSprite().Rotate(10);
-			std::cout << angle << " ";
-
-		}
-
-		else
-		if(event.Key.Code == sf::Key::Right){
-			angle += 10;
-			getEntity().getSprite().Rotate(-10);
-		}
-
 	}
 
-	//If a key was released
-	else if( event.Type == sf::Event::KeyReleased ) {
-
-		if(event.Key.Code == sf::Key::Up){
-			getEntity().getSprite().Move(0,0);
-		}
-
-		else
-		if(event.Key.Code == sf::Key::Down){
-			getEntity().getSprite().Move(0,0);
-		}
-
-		else
-		if(event.Key.Code == sf::Key::Left)
-			getEntity().getSprite().Rotate(0);
-
-		else
-		if(event.Key.Code == sf::Key::Right)
-		getEntity().getSprite().Rotate(0);
-
-		else
-		if(event.Key.Code == sf::Key::A)
-			fireMissile();
-
-		else
-		if(event.Key.Code == sf::Key::S)
-			fireLaser();
+	else
+	{
+		dA = 0;
 	}
 
+
+//-------------move keys----------------
+	if(key.IsKeyDown(sf::Key::Up) || key.IsKeyDown(sf::Key::Down)){
+
+		if(key.IsKeyDown(sf::Key::Up)){
+//			if(move > 0){
+//				move -= .4;
+//			}
+//			else
+			if(move > -maxSpeed)
+				move -= .5;
+			//getEntity().getSprite().Move(dx , dy);
+		}
+
+		else
+		{
+//			if(move < 0){
+//				move = 0;
+//			}
+
+			if(move < maxSpeed)
+				move += .5;
+			//getEntity().getSprite().Move(dx, dy);
+		}
+	}
+	else
+	{
+		move = 0;
+	}
+
+
+//---------------weapons---------------------
+	if(key.IsKeyDown(sf::Key::A))
+		fireMissile();
+
+	else
+	if(key.IsKeyDown(sf::Key::S))
+		fireLaser();
+
+	dx = move*cos((90-getEntity().getSprite().GetRotation() )*M_PI/180);
+	dy = move*sin((90-getEntity().getSprite().GetRotation() )*M_PI/180);
+
+}
+
+void Player::update(){
+	getEntity().getSprite().Move(dx, dy);
+	getEntity().getSprite().Rotate(dA);
 }
