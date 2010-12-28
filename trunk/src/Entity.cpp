@@ -42,6 +42,7 @@ void Entity::setDY(float d){
 
 void Entity::setSprite(std::string str){
 	image.LoadFromFile(str);
+	image.Bind();
 	sprite.SetImage(image);
 }
 
